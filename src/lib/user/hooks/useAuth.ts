@@ -5,12 +5,13 @@
  */
 
 import { useUserQuery } from './useUserQuery';
+import { User } from '../types';
 
 export function useAuth() {
   const { data: user, isLoading, isError, error } = useUserQuery();
   
   return {
-    user: user ?? null,
+    user: (user ?? null) as User | null,
     loading: isLoading,
     isAuthenticated: !!user,
     isError,

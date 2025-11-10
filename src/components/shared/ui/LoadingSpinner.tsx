@@ -1,3 +1,5 @@
+import { LoaderCircle } from 'lucide-react';
+
 interface LoadingSpinnerProps {
   message?: string;
   subMessage?: string;
@@ -14,17 +16,20 @@ export default function LoadingSpinner({
   size = 'medium'
 }: LoadingSpinnerProps) {
   // Size mappings for spinner
-  const sizeClasses = {
-    small: 'h-4 w-4 border-2',
-    medium: 'h-12 w-12 border-4',
-    large: 'h-16 w-16 border-4',
+  const sizeMap = {
+    small: 16,
+    medium: 48,
+    large: 64,
   };
 
   if (variant === 'fullscreen') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="max-w-md w-full text-center space-y-4">
-          <div className={`animate-spin mx-auto ${sizeClasses[size]} border-blue-500 border-t-transparent rounded-full`}></div>
+          <LoaderCircle 
+            className="animate-spin mx-auto text-blue-500" 
+            size={sizeMap[size]}
+          />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
             {message}
           </h2>
@@ -40,13 +45,19 @@ export default function LoadingSpinner({
 
   if (variant === 'inline') {
     return (
-      <div className={`animate-spin ${sizeClasses[size]} border-blue-600 border-t-transparent rounded-full ${className}`}></div>
+      <LoaderCircle 
+        className={`animate-spin text-blue-600 ${className}`}
+        size={sizeMap[size]}
+      />
     );
   }
 
   return (
     <div className={`text-center ${className}`}>
-      <div className={`animate-spin rounded-full ${sizeClasses[size]} border-b-2 border-blue-600 mx-auto`}></div>
+      <LoaderCircle 
+        className="animate-spin mx-auto text-blue-600" 
+        size={sizeMap[size]}
+      />
       <p className="mt-4 text-gray-600 dark:text-gray-400">{message}</p>
       {subMessage && (
         <p className="mt-2 text-sm text-gray-500 dark:text-gray-500">{subMessage}</p>
