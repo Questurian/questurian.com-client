@@ -10,7 +10,7 @@ export default function PricingDisplay() {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-1 gap-8 max-w-4xl mx-auto">
+      <div className="grid 768:grid-cols-1 gap-8 max-w-4xl mx-auto">
         {/* Monthly Plan */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 border border-gray-200 dark:border-gray-700">
           <div className="text-center mb-6">

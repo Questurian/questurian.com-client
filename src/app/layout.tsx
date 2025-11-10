@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/layout/Navbar";
+import { Navbar as NewNavbar } from "../features/Navigation";
 import LoginModalRenderer from "../components/layout/LoginModalRenderer";
 import PasswordResetModalRenderer from "../components/layout/PasswordResetModalRenderer";
 import { QueryProvider } from "../components/providers/QueryProvider";
@@ -31,12 +32,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <QueryProvider>
-          <Navbar />
-          {children}
-          <LoginModalRenderer />
-          <PasswordResetModalRenderer />
-        </QueryProvider>
+        <div className="min-w-[280px] overflow-x-hidden">
+          <QueryProvider>
+            <Navbar />
+            <NewNavbar />
+            {children}
+            <LoginModalRenderer />
+            <PasswordResetModalRenderer />
+          </QueryProvider>
+        </div>
       </body>
     </html>
   );

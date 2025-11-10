@@ -6,10 +6,10 @@ import MobileNavbar from './Mobile/MobileNavbar';
 export default function Navbar() {
   return (
     <nav>
-      <div className="hidden md:block">
+      <div className="hidden 768:block">
         <DesktopNavbar />
       </div>
-      <div className="md:hidden">
+      <div className="">
         <MobileNavbar />
       </div>
     </nav>

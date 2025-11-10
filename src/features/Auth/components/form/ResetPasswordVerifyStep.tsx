@@ -44,7 +44,7 @@ export default function ResetPasswordVerifyStep({
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-lg relative block w-full px-3 py-3 pr-16 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-lg relative block w-full px-3 py-3 pr-16 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 640:text-sm"
                 placeholder="Email address"
                 value={email}
                 disabled
@@ -79,7 +79,7 @@ export default function ResetPasswordVerifyStep({
                 fieldError?.includes('code')
                   ? 'border-red-300 dark:border-red-600'
                   : 'border-gray-300 dark:border-gray-600'
-              } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm tracking-widest text-center text-lg`}
+              } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 640:text-sm tracking-widest text-center text-lg`}
               value={code}
               onChange={onChange}
               disabled={loading}
@@ -113,7 +113,7 @@ export default function ResetPasswordVerifyStep({
                   fieldError?.includes('newPassword')
                     ? 'border-red-300 dark:border-red-600'
                     : 'border-gray-300 dark:border-gray-600'
-                } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 640:text-sm`}
                 placeholder="New password"
                 value={newPassword}
                 onChange={onChange}
@@ -157,7 +157,7 @@ export default function ResetPasswordVerifyStep({
                 fieldError?.includes('confirmPassword')
                   ? 'border-red-300 dark:border-red-600'
                   : 'border-gray-300 dark:border-gray-600'
-              } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+              } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 640:text-sm`}
               placeholder="Confirm password"
               value={confirmPassword}
               onChange={onChange}

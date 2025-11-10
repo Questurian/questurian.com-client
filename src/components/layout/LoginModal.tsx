@@ -55,11 +55,11 @@ export default function LoginModal({
       ></div>
 
       {/* Modal container */}
-      <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+      <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center 640:block 640:p-0">
+        <span className="hidden 640:inline-block 640:align-middle 640:h-screen" aria-hidden="true">&#8203;</span>
 
         {/* Modal content */}
-        <div className="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full sm:p-6 relative z-50 pointer-events-auto">
+        <div className="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all 640:my-8 640:align-middle 640:max-w-md 640:w-full 640:p-6 relative z-50 pointer-events-auto">
           <div className="absolute top-0 right-0 pt-4 pr-4 z-10">
             <button
               type="button"
@@ -73,8 +73,8 @@ export default function LoginModal({
             </button>
           </div>
 
-          <div className="sm:flex sm:items-start">
-            <div className="w-full mt-3 text-center sm:mt-0 sm:text-left">
+          <div className="640:flex 640:items-start">
+            <div className="w-full mt-3 text-center 640:mt-0 640:text-left">
               <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-4">
                 {customTitle || modalTitle}
               </h3>

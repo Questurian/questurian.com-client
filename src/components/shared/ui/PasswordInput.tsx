@@ -50,7 +50,7 @@ export default function PasswordInput({
             error
               ? 'border-red-300 dark:border-red-600'
               : 'border-gray-300 dark:border-gray-600'
-          } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm ${className || ''}`}
+          } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 640:text-sm ${className || ''}`}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
