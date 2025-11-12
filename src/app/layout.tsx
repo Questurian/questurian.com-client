@@ -6,6 +6,7 @@ import { Navbar as NewNavbar } from "../features/Navigation";
 import LoginModalRenderer from "../components/layout/LoginModalRenderer";
 import PasswordResetModalRenderer from "../components/layout/PasswordResetModalRenderer";
 import UserModalRenderer from "../components/layout/UserModalRenderer";
+import MenuModalRenderer from "../components/layout/MenuModalRenderer";
 import { QueryProvider } from "../components/providers/QueryProvider";
 
 const geistSans = Geist({
@@ -67,12 +68,12 @@ export default function RootLayout({
       >
         <div className="min-w-[280px] overflow-x-hidden">
           <QueryProvider>
-            <Navbar />
             <NewNavbar />
             {children}
             <LoginModalRenderer />
             <PasswordResetModalRenderer />
             <UserModalRenderer />
+            <MenuModalRenderer />
           </QueryProvider>
         </div>
       </body>

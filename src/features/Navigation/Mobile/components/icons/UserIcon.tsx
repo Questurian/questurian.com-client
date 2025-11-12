@@ -3,7 +3,7 @@
 import { User } from "lucide-react";
 import { useUserModalStore } from "@/lib/stores/userModalStore";
 
-export default function UserButton() {
+export default function UserIcon() {
   const { openUserModal } = useUserModalStore();
 
   return (

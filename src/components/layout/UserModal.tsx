@@ -67,7 +67,7 @@ export default function UserModal({ isOpen, onClose }: UserModalProps) {
         <div
           className={`
             /* Base styles */
-            fixed inset-0 transition-opacity modal-overlay-fade
+            fixed inset-0 transition-opacity modal-overlay-fade cursor-auto
             /* 480px breakpoint */
             480:inset-y-0 480:right-0 480:left-auto 480:w-[440px]
           `}

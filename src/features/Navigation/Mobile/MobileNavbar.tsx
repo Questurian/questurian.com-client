@@ -1,10 +1,12 @@
 "use client";
 
-import Logo from "./components/Logo";
-import MenuIcon from "./components/icons/MenuIcon";
-import SubscribeButton from "./components/SubscribeButton";
-import SignInButton from "./components/SignInButton";
-import UserButton from "./components/icons/UserButton";
+import {
+  Logo,
+  MenuIcon,
+  SubscribeButton,
+  SignInButton,
+  UserIcon,
+} from "./components";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth, useLogoutMutation } from "@/lib/user/hooks";
@@ -44,7 +46,7 @@ export default function MobileNavbar() {
             ) : null}
             {isAuthenticated ? (
               <>
-                <UserButton />
+                <UserIcon />
               </>
             ) : (
               <SignInButton />
