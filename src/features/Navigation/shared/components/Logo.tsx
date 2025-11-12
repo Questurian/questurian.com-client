@@ -18,7 +18,7 @@ export default function Logo() {
         /* 1024px breakpoint */
         1024:text-6xl
         /* 1280px breakpoint */
-    
+
       `}
     >
       Questurian

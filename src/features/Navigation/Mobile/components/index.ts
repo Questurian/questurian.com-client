@@ -1,3 +1,2 @@
-export { default as Logo } from './Logo';
-export { SignInButton, SubscribeButton } from './buttons';
-export { MenuIcon, CloseIcon, UserIcon } from './icons';
+// Re-export from shared components
+export { Logo, SignInButton, SubscribeButton, MenuIcon, CloseIcon, UserIcon } from '../../shared/components';

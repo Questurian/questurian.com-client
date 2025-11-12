@@ -45,11 +45,10 @@ export default function Navbar() {
   }
   return (
     <nav>
-      <div className="hidden 768:block">
+      <div className="hidden 1024:block">
         <DesktopNavbar />
       </div>
-      <div className="">
-        
+      <div className="1024:hidden">
         <MobileNavbar />
       </div>
     </nav>
