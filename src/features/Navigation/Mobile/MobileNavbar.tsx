@@ -21,7 +21,10 @@ export default function MobileNavbar() {
       {/* // Right side of the navbar */}
       <div className="flex items-center gap-4 768:gap-5 1024:gap-6 1280:gap-8">
         <MenuIcon />
-        <Logo />
+        <Link href="/" className="cursor-pointer">
+          <Logo />
+        </Link>
+        
       </div>
 
       {/* // Left side of the navbar */}
@@ -34,7 +37,7 @@ export default function MobileNavbar() {
             {!isAuthenticated || user?.subscriptionStatus !== "active" ? (
               <Link
                 href="/join"
-                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                className=" text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
                 <SubscribeButton />
               </Link>

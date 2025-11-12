@@ -16,6 +16,7 @@ export default function SubscribeButton() {
     <button
       className={`
         /* Base styles */
+        cursor-pointer
         h-[32px] w-[70px] px-1.5 text-[0.690rem]
         bg-[rgb(70,139,230)] text-white font-semibold rounded
         hover:opacity-90 transition-opacity
