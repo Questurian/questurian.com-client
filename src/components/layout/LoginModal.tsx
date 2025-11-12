@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from 'react';
-import { EnhancedAuthForm } from '@/features/Auth';
-
+import { useState } from "react";
+import { EnhancedAuthForm } from "@/features/Auth";
+import { ChevronsLeft } from 'lucide-react'; 
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -13,6 +13,16 @@ interface LoginModalProps {
   prefillEmail?: string;
 }
 
+
+
+const BackArrow = () => {
+  return (
+    <ChevronsLeft className="w-6 h-6" />
+  );
+};
+
+
+
 export default function LoginModal({
   isOpen,
   onClose,
@@ -20,10 +30,12 @@ export default function LoginModal({
   title: customTitle,
   subtitle: customSubtitle,
   errorMessage,
-  prefillEmail
+  prefillEmail,
 }: LoginModalProps) {
-  const [modalTitle, setModalTitle] = useState("Sign In");
-  const [modalSubtitle, setModalSubtitle] = useState("Sign in to your account or create a new one");
+  const [modalTitle, setModalTitle] = useState("Sign In To Questurian");
+  const [modalSubtitle, setModalSubtitle] = useState(
+    "Sign in to your account or create a new one"
+  );
 
   const handleSuccess = () => {
     onClose();
@@ -33,57 +45,122 @@ export default function LoginModal({
   const handleModeChange = (isSignUp: boolean, showPasswordStep: boolean) => {
     if (!customTitle && showPasswordStep) {
       setModalTitle(isSignUp ? "Create Your Account" : "Welcome Back");
-      setModalSubtitle(isSignUp
-        ? "Set up your password to create your account"
-        : "Enter your password to sign in"
+      setModalSubtitle(
+        isSignUp
+          ? "Set up your password to create your account"
+          : "Enter your password to sign in"
       );
     } else if (!customTitle && !showPasswordStep) {
-      setModalTitle("Sign In");
-      setModalSubtitle("Enter your email to continue");
+      setModalTitle("Sign In To Questurian  ");
+      setModalSubtitle(
+        "Don’t have an account yet? We’ll use the email address you enter to set one up for you."
+      );
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
-      {/* Background overlay */}
+    <div
+      className={`
+      /* Base styles */
+      fixed inset-0 z-50 overflow-y-auto
+    `}
+    >
+      {/* BACKGROUND OVERLAY - Dark semi-transparent background behind modal */}
       <div
-        className="fixed inset-0 bg-black/30 transition-opacity"
+        className={`
+          /* Base styles */
+          fixed inset-0 bg-black/30 transition-opacity
+        `}
         onClick={onClose}
         aria-hidden="true"
       ></div>
 
-      {/* Modal container */}
-      <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center 640:block 640:p-0">
-        <span className="hidden 640:inline-block 640:align-middle 640:h-screen" aria-hidden="true">&#8203;</span>
+      {/* MODAL CONTAINER - Flexbox wrapper that centers/positions the modal */}
+      <div
+        className={`
+        /* Base styles */
+        flex items-center justify-center min-h-screen pb-20 text-center
+      
 
-        {/* Modal content */}
-        <div className="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all 640:my-8 640:align-middle 640:max-w-md 640:w-full 640:p-6 relative z-50 pointer-events-auto">
-          <div className="absolute top-0 right-0 pt-4 pr-4 z-10">
-            <button
-              type="button"
-              className="bg-white dark:bg-gray-800 rounded-md text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer"
-              onClick={onClose}
+      `}
+      >
+        {/* MODAL CONTENT - White box containing form and text */}
+        <div
+          className={`
+          /* Base styles */
+          w-full bg-white pt-8 px-4 text-left overflow-hidden shadow-xl transform transition-all relative z-50 pointer-events-auto h-[90vh] mt-[10vh]
+          /* 480px breakpoint */
+          480:max-w-[640px] 480:h-auto 480:mt-0 480:rounded-md
+          480:py-10 480:px-5
+
+          
+          
+
+
+
+        `}
+          style={{ boxShadow: "0 20px 25px -5px rgba(31, 31, 31, 0.1)" }}
+        >
+          {/* CONTENT WRAPPER - Flex container for title/subtitle and form */}
+          <div
+            className={`
+            /* Base styles */
+            flex flex-col items-center w-full
+
+
+          `}
+          >
+            {/* Return BUTTON - At top of content flow */}
+            <div
+              className={`
+              /* Base styles */
+              w-full mb-8 text-[1rem] font-[Roboto] font-light
+            `}
             >
-              <span className="sr-only">Close</span>
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
+              <button
+                type="button"
+                className={`
+                  /* Base styles */
+                  inline-flex items-center gap-1 text-black cursor-pointer transition-colors text-[18px]  p-0 bg-transparent border-0 focus:outline-none leading-none h-6
+                `}
+                onClick={onClose}
+              >
+                  <ChevronsLeft className="w-6 h-6 flex-shrink-0" />
+                  <span className="leading-tight
+                  ">Return</span>
+              </button>
+            </div>
+            {/* TEXT & FORM SECTION - Title, subtitle, and auth form */}
+            <div
+              className={`
+              /* Base styles */
+              text-left w-full 
+               480:w-[430px] 480:py-5
 
-          <div className="640:flex 640:items-start">
-            <div className="w-full mt-3 text-center 640:mt-0 640:text-left">
-              <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-4">
+            `}
+            >
+              <h3
+                className={`
+                /* Base styles */
+                text-3xl leading-6 font-medium text-zinc-900 mb-4 font-[Quattrocento]
+                480:text-4xl
+              `}
+              >
                 {customTitle || modalTitle}
               </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+              <p
+                className={`
+                /* Base styles */
+                text-[1rem] text-black mb-3 h-14 line-clamp-2 font-[Roboto] font-light
+              `}
+              >
                 {customSubtitle || modalSubtitle}
               </p>
 
               <EnhancedAuthForm
-                key={isOpen ? 'open' : 'closed'}
+                key={isOpen ? "open" : "closed"}
                 inModal={true}
                 onSuccess={handleSuccess}
                 errorMessage={errorMessage}
