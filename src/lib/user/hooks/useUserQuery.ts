@@ -22,11 +22,10 @@ export function useUserQuery() {
   const query = useQuery({
     queryKey: queryKeys.userMe(),
     queryFn: async (): Promise<User | null> => {
+      const backendUrl = getBackendUrl();
       const headers = getApiHeaders();
 
-      // Use relative URL to go through Next.js proxy instead of hitting backend directly
-      // This avoids CORS issues and ensures consistent behavior across all environments
-      const response = await fetch('/api/user/me', {
+      const response = await fetch(`${backendUrl}/api/user/me`, {
         method: 'GET',
         headers: headers,
         credentials: 'include',
@@ -141,9 +140,8 @@ export function useLogoutMutation() {
   return useMutation({
     mutationFn: async () => {
       try {
-        // Use relative URL to go through Next.js proxy instead of hitting backend directly
-        // This avoids CORS issues with ngrok backend
-        const response = await fetch('/api/auth/logout', {
+        const backendUrl = getBackendUrl();
+        const response = await fetch(`${backendUrl}/api/auth/logout`, {
           method: 'POST',
           headers: getApiHeaders(),
           credentials: 'include',

@@ -12,9 +12,8 @@ import type { User } from "@/lib/user/types";
  * Default query function for user/me endpoint
  */
 const userMeQueryFn: QueryFunction<User | null> = async () => {
-  // Use relative URL to go through Next.js proxy instead of hitting backend directly
-  // This avoids CORS issues and ensures consistent behavior across all environments
-  const response = await fetch('/api/user/me', {
+  const backendUrl = getBackendUrl();
+  const response = await fetch(`${backendUrl}/api/user/me`, {
     method: 'GET',
     headers: getApiHeaders(),
     credentials: 'include',
