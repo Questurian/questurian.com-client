@@ -140,6 +140,7 @@ export function useLogoutMutation() {
   return useMutation({
     mutationFn: async () => {
       try {
+        console.log('[LOGOUT] Starting logout request...');
         const backendUrl = getBackendUrl();
         const response = await fetch(`${backendUrl}/api/auth/logout`, {
           method: 'POST',
@@ -147,27 +148,44 @@ export function useLogoutMutation() {
           credentials: 'include',
         });
 
+        console.log('[LOGOUT] Backend response status:', response.status);
+
         // Proceed with local cleanup even if logout request fails
         if (!response.ok) {
           const text = await response.text();
           throw new Error(`Logout failed with status ${response.status}: ${text}`);
         }
+        console.log('[LOGOUT] Backend logout successful');
       } catch (error) {
         // Check if it's a service unavailability error but proceed with cleanup anyway
         if (isServiceUnavailableError(error)) {
-          console.warn('Service unavailable during logout, proceeding with local cleanup');
+          console.warn('[LOGOUT] Service unavailable during logout, proceeding with local cleanup');
         } else {
-          console.warn('Logout request failed, proceeding with local cleanup');
+          console.warn('[LOGOUT] Logout request failed, proceeding with local cleanup:', error);
         }
         // Don't re-throw - proceed with cleanup
       }
     },
     onSettled: () => {
+      console.log('[LOGOUT] onSettled called - starting cache cleanup');
+
+      // Log current cache state before clearing
+      const cacheData = queryClient.getQueryData(queryKeys.userMe());
+      console.log('[LOGOUT] Current user cache before clear:', cacheData);
+
       // Clear all queries BEFORE redirecting to ensure cache is completely cleared
       // This prevents React Query from keeping cached user data in memory
+      console.log('[LOGOUT] Calling queryClient.clear()...');
       queryClient.clear();
 
+      console.log('[LOGOUT] Cache cleared. Verifying...');
+      const cacheDataAfter = queryClient.getQueryData(queryKeys.userMe());
+      console.log('[LOGOUT] User cache after clear:', cacheDataAfter);
+
+      console.log('[LOGOUT] All queries in cache:', queryClient.getQueryCache().getAll());
+
       // Force full page reload to ensure clean state
+      console.log('[LOGOUT] Redirecting to home page...');
       window.location.href = '/';
     },
   });
