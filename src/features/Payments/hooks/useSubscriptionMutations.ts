@@ -205,12 +205,16 @@ export function useCreateCheckoutSessionMutation() {
   return useMutation({
     mutationFn: async (variables?: CreateCheckoutSessionVariables): Promise<CheckoutSessionResponse> => {
       try {
-        // Capture referral ID from Endorsely script if not provided
-        const referralId = variables?.referralId || (typeof window !== 'undefined' ? (window as unknown as Record<string, string>).endorsely_referral : null);
+        let referralId: string | null = null;
 
-        // Log affiliate conversion for debugging
-        if (referralId) {
-          console.log('[Affiliate] User referred by:', referralId);
+        // Capture referral ID from Endorsely script if feature enabled
+        if (process.env.NEXT_PUBLIC_ENDORSELY_ENABLED === 'true') {
+          referralId = variables?.referralId || (typeof window !== 'undefined' ? (window as unknown as Record<string, string>).endorsely_referral : null);
+
+          // Log affiliate conversion for debugging
+          if (referralId) {
+            console.log('[Affiliate] User referred by:', referralId);
+          }
         }
 
         return post<CheckoutSessionResponse>('/api/payments/create-checkout-session', {

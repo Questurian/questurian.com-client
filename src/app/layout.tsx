@@ -26,12 +26,14 @@ export default function RootLayout({
   return (
     <html lang="en" style={{ colorScheme: 'light' }}>
       <head>
-        {/* Endorsely Affiliate Tracking Script */}
-        <script
-          async
-          src="https://assets.endorsely.com/endorsely.js"
-          data-endorsely={process.env.NEXT_PUBLIC_ENDORSELY_ORG_ID || ""}
-        />
+        {/* Endorsely Affiliate Tracking Script - Only load if feature enabled */}
+        {process.env.NEXT_PUBLIC_ENDORSELY_ENABLED === 'true' && (
+          <script
+            async
+            src="https://assets.endorsely.com/endorsely.js"
+            data-endorsely={process.env.NEXT_PUBLIC_ENDORSELY_ORG_ID || ""}
+          />
+        )}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased`}

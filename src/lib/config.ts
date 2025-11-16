@@ -8,7 +8,7 @@ export const config = {
    * Backend API URL
    * @default "http://localhost:4000"
    */
-  backendUrl: process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000",
+  backendUrl: process.env.NEXT_PUBLIC_BACKEND_URL || "https://9ffd2c7233e6.ngrok-free.app",
 
   /**
    * Stripe publishable key
