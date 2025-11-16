@@ -2,20 +2,15 @@
 
 import DesktopNavbar from "./Desktop/DesktopNavbar";
 import MobileNavbar from "./Mobile/MobileNavbar";
+import { SubNav } from "./components/SubNav";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth, useLogoutMutation } from "@/lib/user/hooks";
 import { useLoginModalStore } from "@/lib/stores/loginModalStore";
-import LoadingSpinner from "@/components/shared/ui/LoadingSpinner";
 
 export default function Navbar() {
-  const { user, loading, isAuthenticated } = useAuth();
-  const logoutMutation = useLogoutMutation();
-  const openLoginModal = useLoginModalStore((state) => state.openLoginModal);
-
   // Prevent hydration mismatch by only showing auth state after mount
   const [hasMounted, setHasMounted] = useState(false);
-
   useEffect(() => {
     setHasMounted(true);
   }, []);
@@ -44,13 +39,16 @@ export default function Navbar() {
     );
   }
   return (
-    <nav>
-      <div className="hidden 1024:block">
-        <DesktopNavbar />
-      </div>
-      <div className="1024:hidden">
-        <MobileNavbar />
-      </div>
-    </nav>
+    <>
+      <nav>
+        <div className="hidden 1024:block">
+          <DesktopNavbar />
+        </div>
+        <div className="1024:hidden">
+          <MobileNavbar />
+        </div>
+      </nav>
+      <SubNav />
+    </>
   );
 }

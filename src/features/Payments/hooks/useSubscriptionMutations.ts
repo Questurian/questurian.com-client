@@ -195,13 +195,27 @@ interface CheckoutSessionResponse {
   url: string;
 }
 
+interface CreateCheckoutSessionVariables {
+  referralId?: string | null;
+}
+
 export function useCreateCheckoutSessionMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (): Promise<CheckoutSessionResponse> => {
+    mutationFn: async (variables?: CreateCheckoutSessionVariables): Promise<CheckoutSessionResponse> => {
       try {
-        return post<CheckoutSessionResponse>('/api/payments/create-checkout-session', {});
+        // Capture referral ID from Endorsely script if not provided
+        const referralId = variables?.referralId || (typeof window !== 'undefined' ? (window as any).endorsely_referral : null);
+
+        // Log affiliate conversion for debugging
+        if (referralId) {
+          console.log('[Affiliate] User referred by:', referralId);
+        }
+
+        return post<CheckoutSessionResponse>('/api/payments/create-checkout-session', {
+          referralId: referralId || null,
+        });
       } catch (error) {
         // Check if it's a service unavailability error
         if (isServiceUnavailableError(error)) {
