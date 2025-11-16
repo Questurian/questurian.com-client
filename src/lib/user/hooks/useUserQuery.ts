@@ -22,10 +22,11 @@ export function useUserQuery() {
   const query = useQuery({
     queryKey: queryKeys.userMe(),
     queryFn: async (): Promise<User | null> => {
-      const backendUrl = getBackendUrl();
       const headers = getApiHeaders();
 
-      const response = await fetch(`${backendUrl}/api/user/me`, {
+      // Use relative URL to go through Next.js proxy instead of hitting backend directly
+      // This avoids CORS issues and ensures consistent behavior across all environments
+      const response = await fetch('/api/user/me', {
         method: 'GET',
         headers: headers,
         credentials: 'include',
@@ -164,11 +165,14 @@ export function useLogoutMutation() {
       }
     },
     onSettled: () => {
-      // Clear all queries (clears user data)
-      // Cookie is automatically cleared by backend
+      // Invalidate and refetch user query to clear cached user data immediately
+      // This ensures the UI reflects the logged-out state right away
+      queryClient.invalidateQueries({ queryKey: queryKeys.userMe() });
+
+      // Also clear all queries as a safety measure
       queryClient.clear();
 
-      // Force full page reload
+      // Force full page reload to ensure clean state
       window.location.href = '/';
     },
   });
