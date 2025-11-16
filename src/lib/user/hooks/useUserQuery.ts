@@ -140,8 +140,9 @@ export function useLogoutMutation() {
   return useMutation({
     mutationFn: async () => {
       try {
-        const backendUrl = getBackendUrl();
-        const response = await fetch(`${backendUrl}/api/auth/logout`, {
+        // Use relative URL to go through Next.js proxy instead of hitting backend directly
+        // This avoids CORS issues with ngrok backend
+        const response = await fetch('/api/auth/logout', {
           method: 'POST',
           headers: getApiHeaders(),
           credentials: 'include',
