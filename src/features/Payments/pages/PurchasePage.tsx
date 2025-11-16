@@ -44,7 +44,7 @@ export default function PurchasePage({
   }
 
   const handleSubscribe = () => {
-    checkoutMutation.mutate();
+    checkoutMutation.mutate({});
   };
 
   const handleAuthSuccess = async () => {

@@ -206,7 +206,7 @@ export function useCreateCheckoutSessionMutation() {
     mutationFn: async (variables?: CreateCheckoutSessionVariables): Promise<CheckoutSessionResponse> => {
       try {
         // Capture referral ID from Endorsely script if not provided
-        const referralId = variables?.referralId || (typeof window !== 'undefined' ? (window as any).endorsely_referral : null);
+        const referralId = variables?.referralId || (typeof window !== 'undefined' ? (window as unknown as Record<string, string>).endorsely_referral : null);
 
         // Log affiliate conversion for debugging
         if (referralId) {

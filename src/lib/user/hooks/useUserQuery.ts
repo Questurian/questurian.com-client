@@ -64,7 +64,7 @@ export function useUserQuery() {
     // Consider data fresh for 2 minutes
     staleTime: 2 * 60 * 1000,
     // Only refetch stale data on mount (don't invalidate fresh data)
-    refetchOnMount: 'stale',
+    refetchOnMount: true,
     // Don't refetch on window focus (handled by smart logic below)
     refetchOnWindowFocus: false,
     // Refetch on reconnect to detect if backend is back online

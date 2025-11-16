@@ -190,9 +190,6 @@ describe('AuthPage - OAuth Callback and Cache Invalidation', () => {
   });
 
   it('should validate redirect path from OAuth callback', async () => {
-    const { parseSafeRedirectPath } = require('@/lib/validations');
-    const { getSafeRedirectPath } = require('@/lib/validations');
-
     // Test that unsafe redirect paths are blocked
     const unsafePath = 'javascript:alert("xss")';
     const safePath = '/account';
