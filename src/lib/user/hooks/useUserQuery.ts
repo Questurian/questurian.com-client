@@ -163,11 +163,8 @@ export function useLogoutMutation() {
       }
     },
     onSettled: () => {
-      // Invalidate and refetch user query to clear cached user data immediately
-      // This ensures the UI reflects the logged-out state right away
-      queryClient.invalidateQueries({ queryKey: queryKeys.userMe() });
-
-      // Also clear all queries as a safety measure
+      // Clear all queries BEFORE redirecting to ensure cache is completely cleared
+      // This prevents React Query from keeping cached user data in memory
       queryClient.clear();
 
       // Force full page reload to ensure clean state
