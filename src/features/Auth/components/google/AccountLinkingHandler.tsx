@@ -68,12 +68,14 @@ export default function AccountLinkingHandler() {
             setLinkingResult('Google account linked successfully!');
           }
 
-          // Refetch user data to ensure we have complete membership info
-          try {
-            await queryClient.invalidateQueries({ queryKey: queryKeys.userMe() });
-          } catch {
-            // Continue even if refetch fails - user data is already in cache
-          }
+          // Refetch user data with delay to allow cookies to be set
+          // The backend sets cookies via Set-Cookie headers which need time to be processed
+          setTimeout(() => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.userMe() })
+              .catch(() => {
+                // Continue even if refetch fails - user data is already in cache
+              });
+          }, 500);
 
           if (isPopupWindow()) {
             if (window.opener) {
