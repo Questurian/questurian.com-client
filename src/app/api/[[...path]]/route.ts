@@ -6,7 +6,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function handleRequest(
+async function handleRequest(
   method: string,
   request: NextRequest,
   pathSegments: string[]
