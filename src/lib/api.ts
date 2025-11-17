@@ -5,15 +5,14 @@
 import { config } from './config';
 
 /**
- * Get the backend URL from environment or use default
- * In development with proxy, we use relative URLs to avoid CORS issues
+ * Get the backend URL from environment or use relative URLs
+ * Always uses relative URLs for the API proxy (src/app/api/[[...path]]/route.ts)
+ * The proxy handler tunnels cookies and forwards to the actual backend
  */
 export function getBackendUrl(): string {
-  // Use relative URLs when proxying to avoid CORS issues
-  if (process.env.NODE_ENV === 'development' && config.backendUrl.includes('ngrok')) {
-    return ''; // Use relative URLs, proxy will handle forwarding
-  }
-  return config.backendUrl;
+  // Always use relative URLs - the Next.js API route will handle forwarding to the backend
+  // This ensures cookies are properly tunneled across domains
+  return '';
 }
 
 /**

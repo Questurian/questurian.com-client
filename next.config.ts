@@ -1,16 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  async rewrites() {
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://9ffd2c7233e6.ngrok-free.app';
-
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${backendUrl}/api/:path*`,
-      },
-    ];
-  },
+  // API proxy is handled via src/app/api/[[...path]]/route.ts
+  // This route handler manages:
+  // - Forwarding requests to the backend
+  // - Tunneling cookies (rewriting domain for cross-domain cookie access)
+  // - Preserving all request/response headers
 };
 
 export default nextConfig;
