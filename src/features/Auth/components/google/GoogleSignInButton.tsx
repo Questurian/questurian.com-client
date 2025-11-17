@@ -1,6 +1,6 @@
 "use client";
 
-import { getBackendUrl } from '@/lib/api';
+import { config } from '@/lib/config';
 
 interface GoogleSignInButtonProps {
   className?: string;
@@ -15,7 +15,8 @@ export default function GoogleSignInButton({
 }: GoogleSignInButtonProps) {
 
   const handleSignIn = () => {
-    const backendUrl = getBackendUrl();
+    // Use the actual backend URL for OAuth (can't be proxied through Next.js)
+    const backendUrl = config.backendUrl;
     // Use provided returnTo path, or current page path
     // Send pathname only (e.g., "/", "/account", "/join") not full URL
     const redirectPath = returnTo || window.location.pathname;
