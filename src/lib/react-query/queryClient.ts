@@ -4,7 +4,7 @@
  */
 
 import { QueryClient, QueryFunction } from '@tanstack/react-query';
-import { getBackendUrl, getApiHeaders } from '@/lib/api';
+import { getApiHeaders } from '@/lib/api';
 import { mapUserResponse } from '@/lib/user/mapUserResponse';
 import type { User } from "@/lib/user/types";
 
@@ -12,8 +12,8 @@ import type { User } from "@/lib/user/types";
  * Default query function for user/me endpoint
  */
 const userMeQueryFn: QueryFunction<User | null> = async () => {
-  const backendUrl = getBackendUrl();
-  const response = await fetch(`${backendUrl}/api/user/me`, {
+  // Use relative URL to go through Next.js API proxy, not direct to backend
+  const response = await fetch('/api/user/me', {
     method: 'GET',
     headers: getApiHeaders(),
     credentials: 'include',

@@ -22,12 +22,12 @@ export function useUserQuery() {
   const query = useQuery({
     queryKey: queryKeys.userMe(),
     queryFn: async (): Promise<User | null> => {
-      const backendUrl = getBackendUrl();
       const headers = getApiHeaders();
 
-      console.log('[useUserQuery] Fetching user data from:', backendUrl + '/api/user/me');
+      console.log('[useUserQuery] Fetching user data from: /api/user/me (via proxy)');
 
-      const response = await fetch(`${backendUrl}/api/user/me`, {
+      // Use relative URL to go through Next.js API proxy
+      const response = await fetch('/api/user/me', {
         method: 'GET',
         headers: headers,
         credentials: 'include',
