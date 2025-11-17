@@ -25,14 +25,19 @@ export function useUserQuery() {
       const backendUrl = getBackendUrl();
       const headers = getApiHeaders();
 
+      console.log('[useUserQuery] Fetching user data from:', backendUrl + '/api/user/me');
+
       const response = await fetch(`${backendUrl}/api/user/me`, {
         method: 'GET',
         headers: headers,
         credentials: 'include',
       });
 
+      console.log('[useUserQuery] Response status:', response.status);
+
       // Only clear user on 401/403 (invalid cookie), not on network errors
       if (response.status === 401 || response.status === 403) {
+        console.log('[useUserQuery] Auth invalid - user is not logged in');
         return null;
       }
 
@@ -51,6 +56,7 @@ export function useUserQuery() {
       }
 
       const mappedData = mapUserResponse(data);
+      console.log('[useUserQuery] Successfully fetched user:', mappedData?.email);
       return mappedData;
     },
     // Don't retry on auth errors (handled above)
@@ -64,7 +70,7 @@ export function useUserQuery() {
     // Consider data fresh for 2 minutes
     staleTime: 2 * 60 * 1000,
     // Only refetch stale data on mount (don't invalidate fresh data)
-    refetchOnMount: true,
+    refetchOnMount: 'stale',
     // Don't refetch on window focus (handled by smart logic below)
     refetchOnWindowFocus: false,
     // Refetch on reconnect to detect if backend is back online

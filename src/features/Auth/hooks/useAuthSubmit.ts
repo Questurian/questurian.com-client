@@ -24,9 +24,16 @@ export const useAuthSubmit = ({ inModal = false, onSuccess }: UseAuthSubmitOptio
         },
         {
           onSuccess: async (data) => {
+            console.log('[useAuthSubmit] Login successful, setting cache with user:', data.user.email);
             // Update React Query cache with user data from login response
-            // The mutation's onSuccess handler will trigger refetch for subscription data
+            // Don't invalidate - just set the cache directly to avoid immediate refetch that fails
             queryClient.setQueryData(queryKeys.userMe(), data.user);
+
+            // Invalidate after a small delay to allow cookie to be properly set
+            setTimeout(() => {
+              console.log('[useAuthSubmit] Invalidating user query to refetch subscription data...');
+              queryClient.invalidateQueries({ queryKey: queryKeys.userMe() });
+            }, 500);
 
             if (inModal) {
               // Modal context - just call success callback
@@ -78,9 +85,16 @@ export const useAuthSubmit = ({ inModal = false, onSuccess }: UseAuthSubmitOptio
             // If user is present, authentication is complete
             // Cookie is automatically set by backend
             if (data.user) {
+              console.log('[useAuthSubmit] Signup successful, setting cache with user:', data.user.email);
               // Update React Query cache with user data from signup response
-              // The mutation's onSuccess handler will trigger refetch for subscription data
+              // Don't invalidate - just set the cache directly to avoid immediate refetch that fails
               queryClient.setQueryData(queryKeys.userMe(), data.user);
+
+              // Invalidate after a small delay to allow cookie to be properly set
+              setTimeout(() => {
+                console.log('[useAuthSubmit] Invalidating user query to refetch subscription data...');
+                queryClient.invalidateQueries({ queryKey: queryKeys.userMe() });
+              }, 500);
 
               if (inModal) {
                 // Modal context - just call success callback
