@@ -129,11 +129,8 @@ export function useLoginMutation() {
         throw error;
       }
     },
-    onSuccess: () => {
-      // Invalidate and refetch user data to ensure we have complete membership info
-      // Cookie is automatically set by backend
-      queryClient.invalidateQueries({ queryKey: queryKeys.userMe() });
-    },
+    // Don't invalidate here - let useAuthSubmit handle it with proper timing
+    // This prevents premature refetch before cookies are set
   });
 }
 
@@ -235,12 +232,7 @@ export function useSignupMutation() {
         throw error;
       }
     },
-    onSuccess: (data) => {
-      // If user is present, invalidate and refetch to get complete membership data
-      // Cookie is automatically set by backend
-      if (data.user) {
-        queryClient.invalidateQueries({ queryKey: queryKeys.userMe() });
-      }
-    },
+    // Don't invalidate here - let useAuthSubmit handle it with proper timing
+    // This prevents premature refetch before cookies are set
   });
 }
