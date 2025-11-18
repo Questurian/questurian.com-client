@@ -35,10 +35,6 @@ export const usePasswordResetRequest = () => {
           {
             method: 'POST',
             body: JSON.stringify(data),
-            headers: {
-              'Content-Type': 'application/json',
-              'ngrok-skip-browser-warning': 'true',
-            },
             credentials: 'include',
           }
         );

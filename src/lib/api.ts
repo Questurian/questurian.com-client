@@ -5,14 +5,11 @@
 import { config } from './config';
 
 /**
- * Get the backend URL from environment or use relative URLs
- * Always uses relative URLs for the API proxy (src/app/api/[[...path]]/route.ts)
- * The proxy handler tunnels cookies and forwards to the actual backend
+ * Get the backend URL from environment
+ * Calls the backend directly (no proxy needed for localhost or same-domain deployments)
  */
 export function getBackendUrl(): string {
-  // Always use relative URLs - the Next.js API route will handle forwarding to the backend
-  // This ensures cookies are properly tunneled across domains
-  return '';
+  return process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000';
 }
 
 /**
@@ -21,7 +18,6 @@ export function getBackendUrl(): string {
 export function getApiHeaders(): HeadersInit {
   const headers: HeadersInit = {
     "Content-Type": "application/json",
-    "ngrok-skip-browser-warning": "true",
   };
 
   return headers;
