@@ -71,7 +71,7 @@ export function useUserQuery() {
     return () => {
       window.removeEventListener('focus', handleWindowFocus);
     };
-  }, [query]);
+  }, [query.refetch, query.isError]);
 
   return query;
 }

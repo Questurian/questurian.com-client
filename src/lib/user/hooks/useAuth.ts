@@ -10,13 +10,6 @@ import { User } from '../types';
 export function useAuth() {
   const { data: user, isLoading, isError, error } = useUserQuery();
 
-  console.log('[useAuth] Current auth state:', {
-    user,
-    loading: isLoading,
-    isAuthenticated: !!user,
-    isError,
-  });
-
   return {
     user: (user ?? null) as User | null,
     loading: isLoading,
