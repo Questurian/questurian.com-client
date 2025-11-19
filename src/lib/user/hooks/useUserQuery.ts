@@ -7,8 +7,7 @@ import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/react-query';
 import { User } from "@/lib/user/types";
-import { getBackendUrl, getApiHeaders, post, isServiceUnavailableError } from '@/lib/api';
-import { mapUserResponse } from '@/lib/user/mapUserResponse';
+import { get, post, isServiceUnavailableError } from '@/lib/api';
 
 /**
  * Query the current authenticated user
@@ -22,42 +21,22 @@ export function useUserQuery() {
   const query = useQuery({
     queryKey: queryKeys.userMe(),
     queryFn: async (): Promise<User | null> => {
-      const headers = getApiHeaders();
-
-      console.log('[useUserQuery] Fetching user data from: /api/user/me (via proxy)');
-
-      // Use relative URL to go through Next.js API proxy
-      const response = await fetch('/api/user/me', {
-        method: 'GET',
-        headers: headers,
-        credentials: 'include',
-      });
-
-      console.log('[useUserQuery] Response status:', response.status);
-
-      // Only clear user on 401/403 (invalid cookie), not on network errors
-      if (response.status === 401 || response.status === 403) {
-        console.log('[useUserQuery] Auth invalid - user is not logged in');
-        return null;
-      }
-
-      // If server error or network error, throw to trigger retry
-      if (!response.ok) {
-        throw new Error(`Auth check failed with status ${response.status}`);
-      }
-
-      const responseText = await response.text();
-
-      let data;
       try {
-        data = JSON.parse(responseText);
-      } catch {
-        throw new Error('Invalid JSON response');
-      }
+        const data = await get<User>('/api/user/me');
+        console.log('[useUserQuery] Successfully fetched user:', data?.email);
+        return data;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
 
-      const mappedData = mapUserResponse(data);
-      console.log('[useUserQuery] Successfully fetched user:', mappedData?.email);
-      return mappedData;
+        // Only clear user on 401/403 (invalid cookie), not on network errors
+        if (errorMessage.includes('401') || errorMessage.includes('403')) {
+          console.log('[useUserQuery] Auth invalid - user is not logged in');
+          return null;
+        }
+
+        // Re-throw other errors to trigger retry
+        throw error;
+      }
     },
     // Don't retry on auth errors (handled above)
     retry: (failureCount, error) => {
@@ -143,22 +122,7 @@ export function useLogoutMutation() {
   return useMutation({
     mutationFn: async () => {
       try {
-        console.log('[LOGOUT] Starting logout request...');
-        const backendUrl = getBackendUrl();
-        const response = await fetch(`${backendUrl}/api/auth/logout`, {
-          method: 'POST',
-          headers: getApiHeaders(),
-          credentials: 'include',
-        });
-
-        console.log('[LOGOUT] Backend response status:', response.status);
-
-        // Proceed with local cleanup even if logout request fails
-        if (!response.ok) {
-          const text = await response.text();
-          throw new Error(`Logout failed with status ${response.status}: ${text}`);
-        }
-        console.log('[LOGOUT] Backend logout successful');
+        await post('/api/auth/logout', {});
       } catch (error) {
         // Check if it's a service unavailability error but proceed with cleanup anyway
         if (isServiceUnavailableError(error)) {
@@ -170,25 +134,10 @@ export function useLogoutMutation() {
       }
     },
     onSettled: () => {
-      console.log('[LOGOUT] onSettled called - starting cache cleanup');
-
-      // Log current cache state before clearing
-      const cacheData = queryClient.getQueryData(queryKeys.userMe());
-      console.log('[LOGOUT] Current user cache before clear:', cacheData);
-
-      // Clear all queries BEFORE redirecting to ensure cache is completely cleared
-      // This prevents React Query from keeping cached user data in memory
-      console.log('[LOGOUT] Calling queryClient.clear()...');
+      // Clear all queries to remove cached user data
       queryClient.clear();
 
-      console.log('[LOGOUT] Cache cleared. Verifying...');
-      const cacheDataAfter = queryClient.getQueryData(queryKeys.userMe());
-      console.log('[LOGOUT] User cache after clear:', cacheDataAfter);
-
-      console.log('[LOGOUT] All queries in cache:', queryClient.getQueryCache().getAll());
-
       // Force full page reload to ensure clean state
-      console.log('[LOGOUT] Redirecting to home page...');
       window.location.href = '/';
     },
   });

@@ -2,7 +2,7 @@
 
 import { X } from "lucide-react";
 import Link from "next/link";
-import { useUserQuery } from "@/lib/user/hooks";
+import { useUserQuery, useLogoutMutation } from "@/lib/user/hooks";
 
 interface UserModalProps {
   isOpen: boolean;
@@ -11,14 +11,10 @@ interface UserModalProps {
 
 export default function UserModal({ isOpen, onClose }: UserModalProps) {
   const { data: user } = useUserQuery();
+  const logoutMutation = useLogoutMutation();
 
-  const handleLogout = async () => {
-    try {
-      await fetch("/api/auth/logout", { method: "POST" });
-      window.location.href = "/";
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
+  const handleLogout = () => {
+    logoutMutation.mutate();
   };
 
   if (!isOpen) return null;

@@ -3,62 +3,22 @@
  * Provides global defaults for queries and mutations
  */
 
-import { QueryClient, QueryFunction } from '@tanstack/react-query';
-import { getApiHeaders } from '@/lib/api';
-import { mapUserResponse } from '@/lib/user/mapUserResponse';
-import type { User } from "@/lib/user/types";
+import { QueryClient } from '@tanstack/react-query';
 
 /**
- * Default query function for user/me endpoint
+ * Note: The default queryFn that previously called user/me has been removed.
+ * Each query hook now provides its own queryFn via useQuery().
+ * This provides better flexibility and clearer separation of concerns.
  */
-const userMeQueryFn: QueryFunction<User | null> = async () => {
-  // Use relative URL to go through Next.js API proxy, not direct to backend
-  const response = await fetch('/api/user/me', {
-    method: 'GET',
-    headers: getApiHeaders(),
-    credentials: 'include',
-  });
-
-  // Only clear user on 401/403 (invalid cookie), not on network errors
-  if (response.status === 401 || response.status === 403) {
-    console.log('Authentication invalid (401/403)');
-    return null;
-  }
-
-  // If server error or network error, throw to trigger retry
-  if (!response.ok) {
-    throw new Error(`Auth check failed with status ${response.status}`);
-  }
-
-  const responseText = await response.text();
-
-  let data;
-  try {
-    data = JSON.parse(responseText);
-  } catch (error) {
-    console.error('Invalid JSON response from server:', error);
-    throw new Error('Invalid JSON response');
-  }
-
-  return mapUserResponse(data);
-};
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      queryFn: async (context) => {
-        // Handle user/me query
-        if (context.queryKey[0] === 'user' && context.queryKey[1] === 'me') {
-          return userMeQueryFn(context);
-        }
-        // For other queries, they should provide their own queryFn
-        throw new Error(`No default queryFn configured for ${JSON.stringify(context.queryKey)}`);
-      },
       // Consider data fresh for 2 minutes
       staleTime: 2 * 60 * 1000,
       // Keep unused data in cache for 5 minutes
       gcTime: 5 * 60 * 1000,
-      // Don't refetch on every window focus - implement smarter strategy in useUserQuery
+      // Don't refetch on every window focus - implement smarter strategy in hooks
       refetchOnWindowFocus: false,
       // Refetch when network reconnects
       refetchOnReconnect: true,
