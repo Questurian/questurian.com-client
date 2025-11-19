@@ -22,9 +22,9 @@ export function useUserQuery() {
     queryKey: queryKeys.userMe(),
     queryFn: async (): Promise<User | null> => {
       try {
-        const data = await get<User>('/api/user/me');
-        console.log('[useUserQuery] Successfully fetched user:', data?.email);
-        return data;
+        const response = await get<{ authenticated: boolean; user: User | null }>('/api/user/me');
+        console.log('[useUserQuery] Successfully fetched user:', response?.user?.email);
+        return response?.user ?? null;
       } catch (error) {
         // Handle auth errors (401/403) - not a retriable condition, user just isn't logged in
         if (error instanceof APIError && (error.status === 401 || error.status === 403)) {
