@@ -5,6 +5,19 @@
 import { config } from './config';
 
 /**
+ * Custom error class for API errors that includes status code
+ */
+export class APIError extends Error {
+  constructor(
+    public status: number,
+    message: string
+  ) {
+    super(message);
+    this.name = 'APIError';
+  }
+}
+
+/**
  * Get the backend URL from environment
  * Calls the backend directly (no proxy needed for localhost or same-domain deployments)
  */
@@ -53,7 +66,8 @@ export async function apiRequest<T = unknown>(
 
   if (!response.ok) {
     const errorData = data as { error?: string; message?: string };
-    throw new Error(
+    throw new APIError(
+      response.status,
       errorData.error ||
         errorData.message ||
         `Request failed with status ${response.status}`

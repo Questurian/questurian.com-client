@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/react-query';
 import { User } from "@/lib/user/types";
-import { get, post, isServiceUnavailableError } from '@/lib/api';
+import { get, post, isServiceUnavailableError, APIError } from '@/lib/api';
 
 /**
  * Query the current authenticated user
@@ -26,10 +26,8 @@ export function useUserQuery() {
         console.log('[useUserQuery] Successfully fetched user:', data?.email);
         return data;
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-
-        // Only clear user on 401/403 (invalid cookie), not on network errors
-        if (errorMessage.includes('401') || errorMessage.includes('403')) {
+        // Handle auth errors (401/403) - not a retriable condition, user just isn't logged in
+        if (error instanceof APIError && (error.status === 401 || error.status === 403)) {
           console.log('[useUserQuery] Auth invalid - user is not logged in');
           return null;
         }
@@ -38,11 +36,14 @@ export function useUserQuery() {
         throw error;
       }
     },
-    // Don't retry on auth errors (handled above)
+    // Don't retry on auth errors (401/403) or other 4xx errors - they're not transient
     retry: (failureCount, error) => {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      if (errorMessage.includes('401') || errorMessage.includes('403')) {
-        return false;
+      if (error instanceof APIError) {
+        // Don't retry 4xx errors (client errors) - these won't succeed on retry
+        // Only retry 5xx errors (server errors) which might be transient
+        if (error.status >= 400 && error.status < 500) {
+          return false;
+        }
       }
       return failureCount < 3;
     },
