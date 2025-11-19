@@ -66,16 +66,9 @@ export default function AccountLinkingHandler() {
           } else {
             // Invalid or missing user data, still invalidate to refetch from API
             setLinkingResult('Google account linked successfully!');
+            // Only refetch if we don't have validated data
+            queryClient.invalidateQueries({ queryKey: queryKeys.userMe() });
           }
-
-          // Refetch user data with delay to allow cookies to be set
-          // The backend sets cookies via Set-Cookie headers which need time to be processed
-          setTimeout(() => {
-            queryClient.invalidateQueries({ queryKey: queryKeys.userMe() })
-              .catch(() => {
-                // Continue even if refetch fails - user data is already in cache
-              });
-          }, 500);
 
           if (isPopupWindow()) {
             if (window.opener) {

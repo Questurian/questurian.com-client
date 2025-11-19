@@ -46,10 +46,13 @@ export function useAccount() {
             return;
           }
 
+          let messageReceived = false;
+
           const handleMessage = async (event: MessageEvent) => {
             if (event.origin !== window.location.origin) return;
 
             if (event.data.type === 'GOOGLE_AUTH_SUCCESS') {
+              messageReceived = true;
               popup.close();
               window.removeEventListener('message', handleMessage);
               // Invalidate and refetch user data
@@ -73,13 +76,15 @@ export function useAccount() {
             if (popup.closed) {
               clearInterval(checkClosed);
               window.removeEventListener('message', handleMessage);
-              // Invalidate and refetch user data on popup close
-              queryClient.invalidateQueries({ queryKey: queryKeys.userMe() }).catch((error) => {
-                // Log error but don't block - user can still use the app
-                if (process.env.NODE_ENV === 'development') {
-                  console.error('Failed to refresh user data after popup close:', error);
-                }
-              });
+              // Only invalidate if message wasn't received (fallback for popup close)
+              if (!messageReceived) {
+                queryClient.invalidateQueries({ queryKey: queryKeys.userMe() }).catch((error) => {
+                  // Log error but don't block - user can still use the app
+                  if (process.env.NODE_ENV === 'development') {
+                    console.error('Failed to refresh user data after popup close:', error);
+                  }
+                });
+              }
             }
           }, 1000);
         } else if (result.success) {

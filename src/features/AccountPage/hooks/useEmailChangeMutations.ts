@@ -5,6 +5,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { post, isServiceUnavailableError } from '@/lib/api';
+import { queryKeys } from '@/lib/react-query';
 
 /**
  * Verify password mutation (step 1)
@@ -126,8 +127,8 @@ export function useConfirmEmailChangeMutation() {
     },
     onSuccess: () => {
       // Cookie is automatically cleared by backend (user must re-login with new email)
-      // Clear all queries (includes user data)
-      queryClient.clear();
+      // Clear user-related queries to force re-authentication
+      queryClient.invalidateQueries({ queryKey: ['user'] });
     },
   });
 }
