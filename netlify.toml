@@ -1,9 +1,0 @@
-[build]
-  command = "pnpm install && pnpm build"
-  publish = ".next"
-
-[build.environment]
-  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_APP_URL,NEXT_PUBLIC_BACKEND_URL,NEXT_PUBLIC_ENDORSELY_ORG_ID,NEXT_PUBLIC_FRONTEND_URL,NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY"
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
