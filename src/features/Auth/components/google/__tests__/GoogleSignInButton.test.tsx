@@ -13,7 +13,7 @@ const mockGetBackendUrl = apiModule.getBackendUrl as jest.MockedFunction<
 describe('GoogleSignInButton Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockGetBackendUrl.mockReturnValue('https://9ffd2c7233e6.ngrok-free.app');
+    mockGetBackendUrl.mockReturnValue('http://localhost:4000');
   });
 
   beforeAll(() => {
