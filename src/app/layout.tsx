@@ -26,6 +26,11 @@ export default function RootLayout({
   return (
     <html lang="en" style={{ colorScheme: 'light' }}>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var script=document.createElement("script");script.async=1;script.src='https://emrldco.com/NTIyNTQw.js?t=522540';document.head.appendChild(script);})();`,
+          }}
+        />
         {/* Endorsely Affiliate Tracking Script - Only load if feature enabled */}
         {process.env.NEXT_PUBLIC_ENDORSELY_ENABLED === 'true' && (
           <script
